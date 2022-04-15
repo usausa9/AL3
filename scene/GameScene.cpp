@@ -33,20 +33,26 @@ void GameScene::Initialize() {
 	// 乱数範囲(座標用)
 	std::uniform_real_distribution<float> posDist(-10.0f, 10.0f);
 
-	for (size_t i = 0; i < _countof(worldTransform_); i++) {
+	//for (size_t i = 0; i < _countof(worldTransform_); i++) {
 
-		// X,Y,Z 方向のスケーリングを設定
-		worldTransform_[i].scale_ = {1.0f, 1.0f, 1.0f};
+	//	// X,Y,Z 方向のスケーリングを設定
+	//	worldTransform_[i].scale_ = {1.0f, 1.0f, 1.0f};
 
-		// X,Y,Z 軸周りの回転角を設定
-		worldTransform_[i].rotation_ = {rotDist(engine), rotDist(engine), rotDist(engine)};
+	//	// X,Y,Z 軸周りの回転角を設定
+	//	worldTransform_[i].rotation_ = {rotDist(engine), rotDist(engine), rotDist(engine)};
 
-		// X,Y,Z 軸周りの平行移動を設定
-		worldTransform_[i].translation_ = {posDist(engine), posDist(engine), posDist(engine)};
+	//	// X,Y,Z 軸周りの平行移動を設定
+	//	worldTransform_[i].translation_ = {posDist(engine), posDist(engine), posDist(engine)};
 
-		// ワールドトランスフォームの初期化
-		worldTransform_[i].Initialize();
-	}
+	//	
+	//}
+
+	// ワールドトランスフォームの初期化
+	worldTransform_[0].Initialize();
+
+	worldTransform_[1].translation_ = {0, 4.5f, 0};
+	worldTransform_[1].parent_ = &worldTransform_[0];
+	worldTransform_[1].Initialize();
 
 	// カメラ視点座標を設定
 	viewProjection_.eye;
@@ -158,18 +164,18 @@ void GameScene::Update() {
 
 // FoV変更処理
 	{
-		// 上キーで視野角が広がる
-		if (input_->PushKey(DIK_W)) {
-			viewProjection_.fovAngleY += 0.01f;
-			viewProjection_.fovAngleY = min(viewProjection_.fovAngleY,XM_PI);
-			//下キーで視野角が狭まる
-		} else if (input_->PushKey(DIK_S)) {
-			viewProjection_.fovAngleY -= 0.01f;
-			viewProjection_.fovAngleY = max(viewProjection_.fovAngleY, 0.01f);
-		}
+		//// 上キーで視野角が広がる
+		//if (input_->PushKey(DIK_W)) {
+		//	viewProjection_.fovAngleY += 0.01f;
+		//	viewProjection_.fovAngleY = min(viewProjection_.fovAngleY,XM_PI);
+		//	//下キーで視野角が狭まる
+		//} else if (input_->PushKey(DIK_S)) {
+		//	viewProjection_.fovAngleY -= 0.01f;
+		//	viewProjection_.fovAngleY = max(viewProjection_.fovAngleY, 0.01f);
+		//}
 
-		// 行列の再計算
-		viewProjection_.UpdateMatrix();
+		//// 行列の再計算
+		//viewProjection_.UpdateMatrix();
 
 		// デバッグ用表示
 		debugText_->SetPos(50, 110);
@@ -179,19 +185,47 @@ void GameScene::Update() {
 
 // クリップ距離変更処理
 	{
-		// 上下キーでニアクリップ距離を増減
-		if (input_->PushKey(DIK_UP)) {
-			viewProjection_.nearZ += 0.1f;
-		} else if (input_->PushKey(DIK_DOWN)) {
-			viewProjection_.nearZ -= 0.1f;
-		}
+		//// 上下キーでニアクリップ距離を増減
+		//if (input_->PushKey(DIK_UP)) {
+		//	viewProjection_.nearZ += 0.1f;
+		//} else if (input_->PushKey(DIK_DOWN)) {
+		//	viewProjection_.nearZ -= 0.1f;
+		//}
 
-		// 行列の再計算
-		viewProjection_.UpdateMatrix();
+		//// 行列の再計算
+		//viewProjection_.UpdateMatrix();
 
 		// デバッグ用表示
 		debugText_->SetPos(50, 130);
 		debugText_->Printf("nearZ:%f",viewProjection_.nearZ);
+	}
+
+// キャラクター移動処理
+	{
+		// キャラクターの移動ベクトル
+		XMFLOAT3 move = {0, 0, 0};
+
+		// キャラクター移動の速さ
+		const float kCharacterSpeed = 0.2f;
+
+		// 押した方向で移動ベクトルを変更
+		if (input_->PushKey(DIK_LEFT)) {
+			move = {-kCharacterSpeed, 0, 0};
+		} else if (input_->PushKey(DIK_RIGHT)) {
+			move = {kCharacterSpeed, 0, 0};
+		}
+
+		// 注視点移動 (ベクトルの加算)
+		worldTransform_[PartId::Root].translation.x += move.x;
+		worldTransform_[PartId::Root].translation.y += move.y;
+		worldTransform_[PartId::Root].translation.z += move.z;
+
+		// デバッグ用表示
+		debugText_->SetPos(50, 135);
+		debugText_->Printf(
+		"Root:(%f,%f,%f)", worldTransform_[PartId::Root].translation.x,
+		worldTransform_[PartId::Root].translation.y, 
+		worldTransform_[PartId::Root].translation.z);
 	}
 }
 
