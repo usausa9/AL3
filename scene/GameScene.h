@@ -64,7 +64,7 @@ class GameScene {
 
 	const int blockWidth = 9;
 	const int blockHeight = 9;
-
+	const int blockDepth = 9;
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
@@ -72,7 +72,7 @@ class GameScene {
 	Model* model_ = nullptr;
 
 	// ワールドトランスフォーム
-	WorldTransform worldTransform_[9][9];
+	WorldTransform worldTransform_[9][9][9];
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 
