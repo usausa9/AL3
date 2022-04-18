@@ -11,8 +11,6 @@
 #include "WorldTransform.h"
 #include <DirectXMath.h>
 
-
-
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -71,12 +69,12 @@ class GameScene {
 	Model* model_ = nullptr;
 
 	// ワールドトランスフォーム
-	WorldTransform worldTransform_[100];
+	WorldTransform worldTransform_[20];
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 
-	// カメラ上方向の角度
-	float viewAngle = 0.0f;
+	//// カメラ上方向の角度
+	//float viewAngle = 0.0f;
 
 	/// <summary>
 	/// ゲームシーン用
