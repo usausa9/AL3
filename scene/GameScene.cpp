@@ -33,33 +33,38 @@ void GameScene::Initialize() {
 	//// 乱数範囲(座標用)
 	//std::uniform_real_distribution<float> posDist(-10.0f, 10.0f);
 
-	for (size_t i = 0; i < _countof(worldTransform_); i++) {
-
+	for (size_t i = 0; i < blockHeight; i++) {
 		// X,Y,Z 方向のスケーリングを設定
-		worldTransform_[i].scale_ = {5.0f, 5.0f, 5.0f};
+		for (size_t j = 0; j < blockWidth; j++) {
 
-		if (i < 10) {
-			// X,Y,Z 軸周りの回転角を設定
-			worldTransform_[i].rotation_ = {XMConvertToRadians(0.0f), 0.0f, 0.0f};
-		} else {
-			// X,Y,Z 軸周りの回転角を設定
-			worldTransform_[i].rotation_ = {XMConvertToRadians(0.0f), 0.0f, 0.0f};
+			worldTransform_[i][j].scale_ = {1.0f, 1.0f, 1.0f};
+			if (i % 2 == 1 && j % 2 == 1) {
+				worldTransform_[i][j].scale_ = {0.0f, 0.0f, 0.0f};
+			}
+
+			if (i < 10) {
+				// X,Y,Z 軸周りの回転角を設定
+				worldTransform_[i][j].rotation_ = {XMConvertToRadians(0.0f), 0.0f, 0.0f};
+			} else {
+				// X,Y,Z 軸周りの回転角を設定
+				worldTransform_[i][j].rotation_ = {XMConvertToRadians(0.0f), 0.0f, 0.0f};
+			}
 		}
+	}
 
-		if (i < 10) {
-			// X,Y,Z 軸周りの平行移動を設定
-			worldTransform_[i].translation_ = {(i * 10.0f) - 50.0f, 20.0f, 0.0f};
-		} else {
-			// X,Y,Z 軸周りの平行移動を設定
-			worldTransform_[i].translation_ = {((i - 10) * 10.0f) - 50.0f, -20.0f, 0.0f};
+	for (size_t i = 0; i < blockHeight; i++) {
+		for (size_t j = 0; j < blockWidth; j++) {
+			worldTransform_[i][j].translation_ = {(i * 4) - 16.0f, (j * 4) - 16.0f, 0.0f};
 		}
-
 	}
 
 	// ワールドトランスフォームの初期化
 
-	for (size_t i = 0; i < _countof(worldTransform_); i++) {
-		worldTransform_[i].Initialize();
+	for (size_t i = 0; i < blockHeight; i++) {
+		// X,Y,Z 方向のスケーリングを設定
+		for (size_t j = 0; j < blockWidth; j++) {
+			worldTransform_[i][j].Initialize();
+		}
 	}
 
 	//// カメラ視点座標を設定
@@ -261,8 +266,11 @@ void GameScene::Update() {
 		//}
 	}
 
-	for (size_t i = 0; i < _countof(worldTransform_); i++) {
-		worldTransform_[i].UpdateMatrix();
+	for (size_t i = 0; i < blockHeight; i++) {
+		// X,Y,Z 方向のスケーリングを設定
+		for (size_t j = 0; j < blockWidth; j++) {
+			worldTransform_[i][j].UpdateMatrix();
+		}
 	}
 }
 
@@ -293,8 +301,11 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	// 3Dモデル描画
-	for (size_t i = 0; i < _countof(worldTransform_); i++) {
-		model_->Draw(worldTransform_[i], viewProjection_, textureHandle_);
+	for (size_t i = 0; i < blockHeight; i++) {
+		// X,Y,Z 方向のスケーリングを設定
+		for (size_t j = 0; j < blockWidth; j++) {
+			model_->Draw(worldTransform_[i][j], viewProjection_, textureHandle_);
+		}
 	}
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

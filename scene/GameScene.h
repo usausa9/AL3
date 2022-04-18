@@ -62,6 +62,9 @@ class GameScene {
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
 
+	const int blockWidth = 9;
+	const int blockHeight = 9;
+
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
@@ -69,7 +72,7 @@ class GameScene {
 	Model* model_ = nullptr;
 
 	// ワールドトランスフォーム
-	WorldTransform worldTransform_[20];
+	WorldTransform worldTransform_[9][9];
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 
