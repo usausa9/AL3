@@ -69,8 +69,8 @@ void GameScene::Update() {
 	// Y軸 回転計算
 	XMFLOAT3 frontVec(0, 0, 1);
 	XMFLOAT3 resultVec(0, 0, 1);
-	resultVec.x =   cosf(worldTransform_[PartId::Center].rotation_.y)  * frontVec.x + sinf(worldTransform_[PartId::Center].rotation_.y) * frontVec.z;
-	resultVec.z = (-sinf(worldTransform_[PartId::Center].rotation_.y)) * frontVec.x + cosf(worldTransform_[PartId::Center].rotation_.y) * frontVec.z;
+	resultVec.x =  cosf(worldTransform_[PartId::Center].rotation_.y) * frontVec.x + sinf(worldTransform_[PartId::Center].rotation_.y) * frontVec.z;
+	resultVec.z = -sinf(worldTransform_[PartId::Center].rotation_.y) * frontVec.x + cosf(worldTransform_[PartId::Center].rotation_.y) * frontVec.z;
 
 // キャラクター移動処理
 	{
