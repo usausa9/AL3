@@ -109,9 +109,7 @@ void GameScene::Update() {
 	worldTransform_[PartId::Head].UpdateMatrix();
 
 	// カメラ
-	XMFLOAT3 cameraVec(0, 0, 0);
-	cameraVec.x = resultVec.x;
-	cameraVec.z = resultVec.z;
+	XMFLOAT3 cameraVec(resultVec.x, 0, resultVec.z);
 
 	// 固定距離
 	const float cameraDistance = 35.0f;
