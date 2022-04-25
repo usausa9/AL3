@@ -68,21 +68,21 @@ void GameScene::Update() {
 
 	// Y軸 回転計算
 	XMFLOAT3 frontVec(0, 0, 1);
-	XMFLOAT3 resultVec(0, 0, 1);
+	XMFLOAT3 resultVec(0, 0, 0);
 	resultVec.x =  cosf(worldTransform_[PartId::Center].rotation_.y) * frontVec.x + sinf(worldTransform_[PartId::Center].rotation_.y) * frontVec.z;
 	resultVec.z = -sinf(worldTransform_[PartId::Center].rotation_.y) * frontVec.x + cosf(worldTransform_[PartId::Center].rotation_.y) * frontVec.z;
 
 // キャラクター移動処理
 	{
-		float lotateSpeed = 0.2f;
+		float kMoveSpeed = 0.2f;
 
 		// 押した方向で移動ベクトルを変更
 		if (input_->PushKey(DIK_UP)) {
-			worldTransform_[PartId::Center].translation_.x -= lotateSpeed * resultVec.x;
-			worldTransform_[PartId::Center].translation_.z -= lotateSpeed * resultVec.z;
+			worldTransform_[PartId::Center].translation_.x -= kMoveSpeed * resultVec.x;
+			worldTransform_[PartId::Center].translation_.z -= kMoveSpeed * resultVec.z;
 		}  else if (input_->PushKey(DIK_DOWN)) {
-			worldTransform_[PartId::Center].translation_.x += lotateSpeed * resultVec.x;
-			worldTransform_[PartId::Center].translation_.z += lotateSpeed * resultVec.z;
+			worldTransform_[PartId::Center].translation_.x += kMoveSpeed * resultVec.x;
+			worldTransform_[PartId::Center].translation_.z += kMoveSpeed * resultVec.z;
 		}
 
 		// 行列の再計算
