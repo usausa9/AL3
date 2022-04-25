@@ -54,7 +54,7 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-// 視点移動処理
+	// キャラクター移動処理
 	{
 		if (input_->PushKey(DIK_LEFT)) {
 			worldTransform_[PartId::Center].rotation_.y -= 0.1f;
@@ -78,7 +78,7 @@ void GameScene::Update() {
 	resultVec.x =  cosf(worldTransform_[PartId::Center].rotation_.y) * frontVec.x + sinf(worldTransform_[PartId::Center].rotation_.y) * frontVec.z;
 	resultVec.z = -sinf(worldTransform_[PartId::Center].rotation_.y) * frontVec.x + cosf(worldTransform_[PartId::Center].rotation_.y) * frontVec.z;
 
-// キャラクター移動処理
+
 	{
 		float kMoveSpeed = 0.2f;
 
@@ -108,6 +108,7 @@ void GameScene::Update() {
 	worldTransform_[PartId::Right].UpdateMatrix();
 	worldTransform_[PartId::Head].UpdateMatrix();
 
+	// 視点移動処理
 	// カメラ
 	XMFLOAT3 cameraVec(resultVec.x, 0, resultVec.z);
 
