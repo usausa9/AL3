@@ -67,6 +67,9 @@ class GameScene {
 
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_[100];
+	WorldTransform constObject[4];
+	const int constObjectCount = 4;
+
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 

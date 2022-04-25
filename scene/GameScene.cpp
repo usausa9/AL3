@@ -25,6 +25,16 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 
 	// ワールドトランスフォームの初期化
+
+	constObject[0].translation_ = {0, 0, 7.0f};
+	constObject[1].translation_ = {7.0f, 0, 0};
+	constObject[2].translation_ = {-7.0f, 0, 0};
+	constObject[3].translation_ = {0, 7.0f, 0};
+
+	for (int i = 0; i < constObjectCount; i++) {
+		constObject[i].Initialize();
+	}
+
 	worldTransform_[PartId::Center].Initialize();
 
 	worldTransform_[PartId::Left].translation_ = {-2.0f, 0, 0};
@@ -38,10 +48,6 @@ void GameScene::Initialize() {
 	worldTransform_[PartId::Head].translation_ = {0, 0, -2.0f};
 	worldTransform_[PartId::Head].parent_ = &worldTransform_[PartId::Center];
 	worldTransform_[PartId::Head].Initialize();
-
-	// カメラ視点座標を設定
-	viewProjection_.eye.y = 15.0f;
-	viewProjection_.eye.z = -25.0f;
 
 	// ビュープロジェクション
 	viewProjection_.Initialize();
@@ -101,6 +107,22 @@ void GameScene::Update() {
 	worldTransform_[PartId::Left].UpdateMatrix();
 	worldTransform_[PartId::Right].UpdateMatrix();
 	worldTransform_[PartId::Head].UpdateMatrix();
+
+	// カメラ
+	XMFLOAT3 cameraVec(0, 0, 0);
+	cameraVec.x = resultVec.x;
+	cameraVec.z = resultVec.z;
+
+	// 固定距離
+	const float cameraDistance = 35.0f;
+
+	viewProjection_.eye.x = worldTransform_[PartId::Center].translation_.x + cameraDistance * cameraVec.x;
+	viewProjection_.eye.y = worldTransform_[PartId::Center].translation_.y + cameraDistance * cameraVec.y;
+	viewProjection_.eye.z = worldTransform_[PartId::Center].translation_.z + cameraDistance * cameraVec.z;
+
+	viewProjection_.target = worldTransform_[PartId::Center].translation_;
+
+	viewProjection_.UpdateMatrix();
 }
 
 void GameScene::Draw() {
@@ -134,6 +156,11 @@ void GameScene::Draw() {
 	model_->Draw(worldTransform_[PartId::Left], viewProjection_, textureHandle_);
 	model_->Draw(worldTransform_[PartId::Right], viewProjection_, textureHandle_);
 	model_->Draw(worldTransform_[PartId::Head], viewProjection_, textureHandle_);
+
+	for (int i = 0; i < constObjectCount ; i++) {
+		model_->Draw(constObject[i], viewProjection_, textureHandle_);
+	}
+
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
